@@ -6,7 +6,7 @@
     <script type="text/javascript">
 
         // Load the Visualization API and the controls package.
-        google.charts.load('current', { 'packages': ['corechart', 'controls'] });
+        google.charts.load('current', { 'packages': ['corechart', 'controls', 'bar'] });
 
         // Set a callback to run when the Google Visualization API is loaded.
         google.charts.setOnLoadCallback(drawDashboard);
@@ -14,54 +14,48 @@
         // Callback that creates and populates a data table,
         // instantiates a dashboard, a range slider and a pie chart,
         // passes in the data and draws it.
-        function drawDashboard() {
+        async function drawDashboard() {
+
+            let url = "https://fanniepack.co/api/stats";
+            let response = await fetch(url);
+            let data = await response.json();
 
             // Create our data table.
-            var data = google.visualization.arrayToDataTable([
-                ['Name', 'Donuts eaten'],
-                ['Michael', 5],
-                ['Elisa', 7],
-                ['Robert', 3],
-                ['John', 2],
-                ['Jessica', 6],
-                ['Aaron', 1],
-                ['Margareth', 8]
+            var table = google.visualization.arrayToDataTable([
+                ['Reason Failed', 'Number of People'],
+                ['Credit Score', data["failedCredit"]],
+                ['Loan-to-Value', data["failedLTV"]],
+                ['Debt-to-Income', data["failedDTI"]],
+                ['Front-End Debt-to-Income', data["failedFEDTI"]]
             ]);
 
             // Create a dashboard.
             var dashboard = new google.visualization.Dashboard(
                 document.getElementById('dashboard_div'));
 
-            // Create a range slider, passing some options
-            var donutRangeSlider = new google.visualization.ControlWrapper({
-                'controlType': 'NumberRangeFilter',
-                'containerId': 'filter_div',
-                'options': {
-                    'filterColumnLabel': 'Donuts eaten'
-                }
-            });
+            var view = new google.visualization.DataView(table);
+            view.setColumns([0, 1,
+                       { calc: "stringify",
+                         sourceColumn: 1,
+                         type: "string",
+                         role: "annotation" }]);
 
-            // Create a pie chart, passing some options
-            var pieChart = new google.visualization.ChartWrapper({
-                'chartType': 'PieChart',
-                'containerId': 'chart_div',
-                'options': {
-                    'width': 300,
-                    'height': 300,
-                    'pieSliceText': 'value',
-                    'legend': 'right',
-                }
-            });
 
-            // Establish dependencies, declaring that 'filter' drives 'pieChart',
-            // so that the pie chart will only display entries that are let through
-            // given the chosen slider range.
-            dashboard.bind(donutRangeSlider, pieChart);
+            var options = {
+                title: "Reasons of failure to qualify for a home loan",
+                width: 600,
+                height: 400,
+                bar: {groupWidth: "95%"},
+                legend: { position: "none" },
+                bars: 'horizontal'
+            };
 
-            // Draw the dashboard.
-            dashboard.draw(data);
+            var barChart = new google.charts.Bar(document.getElementById("barchart_values"));
+
+            barChart.draw(view, google.charts.Bar.convertOptions(options));
         }
     </script>
+    <div id="barchart_values" style="width: 900px; height: 300px;"></div>
 </head>
 
 <body>
