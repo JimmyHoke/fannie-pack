@@ -29,20 +29,16 @@
             let stuloan = false;
             let mort = false;
 
-            if (document.getElementById('creditScore').value < 640)
-            {
+            if (document.getElementById('creditScore').value < 640) {
                 credit = true;
             }
-            if ((document.getElementById('appraisedValue').value - document.getElementById('downPayment').value) / document.getElementById('appraisedValue').value > 0.95)
-            {
+            if ((document.getElementById('appraisedValue').value - document.getElementById('downPayment').value) / document.getElementById('appraisedValue').value > 0.95) {
                 ltv = true;
             }
-            if ((document.getElementById('creditCardPayment').value + document.getElementById('monthlyMortgagePayment').value + document.getElementById('carPayment').value + document.getElementById('studentLoanPayment').value) / document.getElementById('grossMonthlyIncome').value > 0.36)
-            {
+            if ((document.getElementById('creditCardPayment').value + document.getElementById('monthlyMortgagePayment').value + document.getElementById('carPayment').value + document.getElementById('studentLoanPayment').value) / document.getElementById('grossMonthlyIncome').value > 0.36) {
                 dti = true;
             }
-            if ((document.getElementById('monthlyMortgagePayment').value) / document.getElementById('grossMonthlyIncome').value > 0.28)
-            {
+            if ((document.getElementById('monthlyMortgagePayment').value) / document.getElementById('grossMonthlyIncome').value > 0.28) {
                 fedti = true;
             }
 
@@ -59,8 +55,7 @@
                 mort = true;
             }
             let fail = false;
-            if(credit || ltv || dit || fedti)
-            {
+            if (credit || ltv || dit || fedti) {
                 fail = true;
 
                 // document.getElementById("sugMort").hidden = false;
@@ -71,15 +66,16 @@
                 document.getElementById("desc").innerHTML = "Sorry, you didn't qualify, but here are some ways you can improve.";
 
                 document.getElementById("result").innerHTML = "You didn't qualify";
-                //document.getElementById("sugMort").style.display = !mort ? "none":"block";
-                document.getElementById("sugCred").style.display = !credbal ? "none":"block";
-                document.getElementById("sugStudLoan").style.display = !stuloan ? "none":"block";
-                document.getElementById("sugCar").style.display = !carpay ? "none":"block";
+                document.getElementById("sugFedti").style.display = !fedti ? "none" : "block";
+                document.getElementById("sugCred").style.display = !credit ? "none" : "block";
+                document.getElementById("sugLtv").style.display = !ltv ? "none" : "block";
+                document.getElementById("sugDti").style.display = !carpay ? "none" : "block";
+                document.getElementById("sugs").style.display = "block";
             }
-            else
-            {
+            else {
                 document.getElementById("result").innerHTML = "You qualified!";
                 document.getElementById("desc").innerHTML = "You are eligible for this mortage!";
+                document.getElementById("sugs").style.display = "none";
             }
             document.getElementById("results").style.display = "block";
             document.getElementById("result").style.display = "block";
@@ -98,7 +94,8 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="grossMonthlyIncome" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="grossMonthlyIncome" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -110,7 +107,8 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="creditCardPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="creditCardPayment" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -122,7 +120,8 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="carPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="carPayment" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -134,7 +133,8 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="studentLoanPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="studentLoanPayment" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -143,7 +143,8 @@
             <div class="input-group">
                 <label for="creditScore" class="col-sm-2 col-form-label">Credit Score</label>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="creditScore" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="creditScore" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -159,7 +160,8 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="appraisedValue" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="appraisedValue" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -171,7 +173,8 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="downPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="downPayment" placeholder="0"
+                        required>
                 </div>
             </div>
         </div>
@@ -183,19 +186,77 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" oninput="calcData()" id="monthlyMortgagePayment" type="number" placeholder="0"
-                        required>
+                    <input type="text" class="form-control" oninput="calcData()" id="monthlyMortgagePayment"
+                        type="number" placeholder="0" required>
                 </div>
             </div>
         </div>
         <div style="display: none;" id="results">
             <h2 style="display: none;" id="result"></h2>
             <p style="display: none;" id="desc"></p>
-            <ul>
-                <li style="display: none;" id="sugMort">Pay off your mortgage</li>
+            <ul id="sugs">
+                <!-- <li style="display: none;" id="sugMort">Pay off your mortgage</li>
                 <li style="display: none;" id="sugCred">Pay off your credit card balance</li>
                 <li style="display: none;" id="sugStudLoan">Pay off your student loans</li>
                 <li style="display: none;" id="sugCar">Pay off your car</li>
+             -->
+                <li style="display: none;" id="sugCred">
+                    <h3>Improve your credit score</h3>
+                    <ul>Pay your bills on time. This is the most important factor in your credit score. Even one late
+                        payment can have a negative impact.</ul>
+                    <ul>Keep your credit utilization low. This means using less than 30% of your available credit.</ul>
+                    <ul>Don't open too many new accounts at once. Every time you apply for a new credit account, a hard
+                        inquiry is placed on your credit report. Too many hard inquiries can lower your credit score.
+                    </ul>
+                    <ul>Keep your old accounts open. The longer your credit history, the better.</ul>
+                    <ul>Dispute any errors on your credit report. You can get a free copy of your credit report from
+                        each of the three major credit bureaus once a year at Annual Credit Report (<a
+                            href="https://annualcreditreport.com">annualcreditreport.com</a>). Review your reports
+                        carefully and dispute any errors you find.</ul>
+                </li>
+                <li style="display: none;" id="sugLtv">
+                    <h3>Reduce your loan-to-value</h3>
+                    <ul>
+                        <li>Make a larger down payment. This is the biggest impact you can have on your LTV ratio. If
+                            you can afford to put down a larger down payment, it will significantly reduce your LTV
+                            ratio and make you more likely to qualify for a home loan.</li>
+                    </ul>
+                </li>
+                <li style="display: none;" id="sugDti">
+                    <h3>Reduce your debt-to-income ratio</h3>
+                    <ul>
+                        <li>Make a budget and track your spending. This will help you identify where your money is going
+                            and where you can make cuts. There are many budgeting apps and tools that can help you get
+                            started.</li>
+                        <li>Pay more than the minimum payment on your debts. This will help you pay off your debt faster
+                            and save money on interest.</li>
+                        <li>Consider consolidating your debt. This can help you simplify your payments and get a lower
+                            interest rate.</li>
+                        <li>Avoid taking on new debt. This may seem obvious, but it's important to resist the temptation
+                            to use credit cards to finance new purchases.</li>
+                        <li>Increase your income. This can be done by getting a part-time job, starting a side hustle,
+                            or asking for a raise at your current job.</li>
+                    </ul>
+                </li>
+                <li style="display: none;" id="sugFedti">
+                    <h3>Reduce your front-end debt-to-income ratio</h3>
+                    <ul>
+                        <li>Make a budget and track your spending. This will help you identify where your money is going
+                            and where you can make cuts. There are many budgeting apps and tools that can help you get
+                            started.</li>
+                        <li>Pay more than the minimum payment on your debts. This will help you pay off your debt faster
+                            and save money on interest.</li>
+                        <li>Consider consolidating your debt. This can help you simplify your payments and get a lower
+                            interest rate.</li>
+                        <li>Avoid taking on new debt. This may seem obvious, but it's important to resist the temptation
+                            to use credit cards to finance new purchases.</li>
+                        <li>Increase your income. This can be done by getting a part-time job, starting a side hustle,
+                            or asking for a raise at your current job.</li>
+                        <li>Get rid of unnecessary debt. If you have credit card debt or other unsecured debt, pay it
+                            off as quickly as possible. This will reduce your monthly debt payments and improve your
+                            front-end debt-to-income ratio.</li>
+                    </ul>
+                </li>
             </ul>
         </div>
 
