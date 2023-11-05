@@ -1,9 +1,16 @@
-<html>
+<html data-bs-theme="dark">
 
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <!--Load the AJAX API-->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
+        var chartwidth = $('#barchart_values').width();
+        var chartheight = $('#barchart_values').height();
 
         // Load the Visualization API and the controls package.
         google.charts.load('current', { 'packages': ['corechart', 'controls', 'bar'] });
@@ -43,11 +50,16 @@
 
             var options = {
                 title: "Reasons of failure to qualify for a home loan",
-                width: 600,
-                height: 400,
+                width: chartwidth,
+                height: chartheight,
+                chartArea: {width:chartwidth,left:20,top:20,height:chartheight},
                 bar: {groupWidth: "95%"},
                 legend: { position: "none" },
-                bars: 'horizontal'
+                bars: 'horizontal',
+                backgroundColor: "#000000",
+                chartArea: {backgroundColor: "#000000"},
+                titleTextStyle: {color: "whitesmoke", fontSize: 32},
+                vAxis: {textStyle: {color:"whitesmoke", fontSize: 24}}
             };
 
             var barChart = new google.charts.Bar(document.getElementById("barchart_values"));
@@ -55,7 +67,8 @@
             barChart.draw(view, google.charts.Bar.convertOptions(options));
         }
     </script>
-    <div id="barchart_values" style="width: 900px; height: 300px;"></div>
+    <!-- <div id="barchart_values" style="width: 900px; height: 300px;"></div> -->
+    <div id="barchart_values" style="width: 100%; height: 100%;"></div>
 </head>
 
 <body>
