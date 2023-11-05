@@ -33,9 +33,9 @@
             {
                 credit = true;
             }
-            if ((document.getElementById('appraisedValue').value - document.getElementById('downPayment').value) / document.getElementById('appraisedValue').value)
+            if ((document.getElementById('appraisedValue').value - document.getElementById('downPayment').value) / document.getElementById('appraisedValue').value > 0.95)
             {
-                credit = true;
+                ltv = true;
             }
             if ((document.getElementById('creditCardPayment').value + document.getElementById('monthlyMortgagePayment').value + document.getElementById('carPayment').value + document.getElementById('studentLoanPayment').value) / document.getElementById('grossMonthlyIncome').value > 0.36)
             {
@@ -46,16 +46,16 @@
                 fedti = true;
             }
 
-            if (document.getElementById('carPayment') > 0) {
+            if (document.getElementById('carPayment').value > 0) {
                 carpay = true;
             }
-            if (document.getElementById('creditCardPayment') > 0) {
+            if (document.getElementById('creditCardPayment').value > 0) {
                 credbal = true;
             }
-            if (document.getElementById('studentLoanPayment') > 0) {
+            if (document.getElementById('studentLoanPayment').value > 0) {
                 stuloan = true;
             }
-            if (document.getElementById('monthlyMortgagePayment') > 0) {
+            if (document.getElementById('monthlyMortgagePayment').value > 0) {
                 mort = true;
             }
             let fail = false;
@@ -63,18 +63,27 @@
             {
                 fail = true;
 
-                document.getElementById("sugMort").hidden = false;
-                document.getElementById("sugCred").hidden = false;
-                document.getElementById("sugStudLoan").hidden = false;
-                document.getElementById("sugCar").hidden = false;
+                // document.getElementById("sugMort").hidden = false;
+                // document.getElementById("sugCred").hidden = false;
+                // document.getElementById("sugStudLoan").hidden = false;
+                // document.getElementById("sugCar").hidden = false;
+
+                document.getElementById("desc").innerHTML = "Sorry, you didn't qualify, but here are some ways you can improve.";
 
                 document.getElementById("result").innerHTML = "You didn't qualify";
-                document.getElementById("sugMort").hidden = !mort;
-                document.getElementById("sugCred").hidden = !credbal;
-                document.getElementById("sugStudLoan").hidden = !stuloan;
-                document.getElementById("sugCar").hidden = !carpay;
+                //document.getElementById("sugMort").style.display = !mort ? "none":"block";
+                document.getElementById("sugCred").style.display = !credbal ? "none":"block";
+                document.getElementById("sugStudLoan").style.display = !stuloan ? "none":"block";
+                document.getElementById("sugCar").style.display = !carpay ? "none":"block";
             }
-            document.getElementById("results").hidden = !fail;
+            else
+            {
+                document.getElementById("result").innerHTML = "You qualified!";
+                document.getElementById("desc").innerHTML = "You are eligible for this mortage!";
+            }
+            document.getElementById("results").style.display = "block";
+            document.getElementById("result").style.display = "block";
+            document.getElementById("desc").style.display = "block";
         }
     </script>
     <form>
@@ -89,7 +98,7 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="grossMonthlyIncome" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="grossMonthlyIncome" placeholder="0" required>
                 </div>
             </div>
         </div>
@@ -101,7 +110,7 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="creditCardPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="creditCardPayment" placeholder="0" required>
                 </div>
             </div>
         </div>
@@ -113,7 +122,7 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="carPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="carPayment" placeholder="0" required>
                 </div>
             </div>
         </div>
@@ -125,7 +134,7 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="studentLoanPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="studentLoanPayment" placeholder="0" required>
                 </div>
             </div>
         </div>
@@ -150,7 +159,7 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="appraisedValue" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="appraisedValue" placeholder="0" required>
                 </div>
             </div>
         </div>
@@ -162,7 +171,7 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="downPayment" placeholder="0" required>
+                    <input type="text" class="form-control" oninput="calcData()" id="downPayment" placeholder="0" required>
                 </div>
             </div>
         </div>
@@ -174,19 +183,19 @@
                     <span class="input-group-text" id="inputGroupPrepend">$</span>
                 </div>
                 <div class="pl-0 col-sm-5">
-                    <input type="text" class="form-control" id="monthlyMortgagePayment" type="number" placeholder="0"
+                    <input type="text" class="form-control" oninput="calcData()" id="monthlyMortgagePayment" type="number" placeholder="0"
                         required>
                 </div>
             </div>
         </div>
-        <div style="display: hidden;" id="results">
-            <h2 id="result"></h2>
-            <p id="fail">Sorry, you didn't qualify, but here are some ways you can improve.</p>
+        <div style="display: none;" id="results">
+            <h2 style="display: none;" id="result"></h2>
+            <p style="display: none;" id="desc"></p>
             <ul>
-                <li id="sugMort">Pay off your mortgage</li>
-                <li id="sugCred">Pay off your credit card balance</li>
-                <li id="sugStudLoan">Pay off your student loans</li>
-                <li id="sugCar">Pay off your car</li>
+                <li style="display: none;" id="sugMort">Pay off your mortgage</li>
+                <li style="display: none;" id="sugCred">Pay off your credit card balance</li>
+                <li style="display: none;" id="sugStudLoan">Pay off your student loans</li>
+                <li style="display: none;" id="sugCar">Pay off your car</li>
             </ul>
         </div>
 
