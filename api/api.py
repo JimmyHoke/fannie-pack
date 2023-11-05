@@ -30,19 +30,25 @@ def get_posts():
     hasStudentLoans = 0
     hasMortgage = 0
     count = 0
+    approved = 0
     csvfile = open('HackUTD-2023-HomeBuyerInfo.csv', newline='')
     datareader = csv.reader(csvfile, delimiter=',', quotechar='|')
     for row in datareader:
+        isApproved = True
         row = list(map(float,row))
         count += 1
         if row[9] < 640:
             failedCredit += 1
+            isApproved = False
         if ((row[7] - row[6]) / row[7]) >= 0.8:
             failedLTV += 1
+            isApproved = False
         if (row[2] + row[3] + row[4] + row[8]) / float(row[1]) > 0.43:
             failedDTI += 1
+            isApproved = False
         if (row[8]) / float(row[1]) > 0.28:
             failedFEDTI += 1
+            isApproved = False
         if (row[3] > 0):
             hasCarPay += 1
         if (row[2] > 0):
@@ -51,9 +57,11 @@ def get_posts():
             hasStudentLoans += 1
         if (row[8] > 0):
             hasMortgage += 1
+
+        approved += 1 if isApproved else 0
     data = {'failedCredit':failedCredit, 'failedLTV':failedLTV, 'failedDTI':failedDTI,
              'failedFEDTI':failedFEDTI,'hasCarPay':hasCarPay, 'hasCreditBalance':hasCreditBalance,
-             'hasStudentLoans':hasStudentLoans, 'hasMortgage':hasMortgage, 'count':count}
+             'hasStudentLoans':hasStudentLoans, 'hasMortgage':hasMortgage, 'count':count, 'approvals':approved}
     return data
 
 @app.get("/api/data")
